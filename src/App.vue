@@ -22,7 +22,7 @@
     export default {
         data() {
             return {
-                code: ` ---
+                code: `
 - hosts: webservers
 
   vars:
