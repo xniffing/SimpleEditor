@@ -1,6 +1,7 @@
 <template>
     <section>
-        <codemirror class="editor"
+        <codemirror
+                class="editor"
                 ref="myCm"
                 :value="code"
                 :options="cmOptions"
@@ -13,8 +14,7 @@
 </template>
 
 <script>
-    // language js
-    import "codemirror/mode/javascript/javascript.js";
+    import "codemirror/mode/yaml/yaml.js"
     // theme css
     import "codemirror/theme/base16-dark.css";
     // more codemirror resources
@@ -57,10 +57,10 @@
                 cmOptions: {
                     // codemirror options
                     tabSize: 4,
-                    mode: "text/javascript",
+                    mode: "yaml",
                     theme: "base16-dark",
                     lineNumbers: true,
-                    line: true
+                    line: true,
                     // more codemirror options, 更多 codemirror 的高级配置...
                 }
             };
@@ -90,14 +90,13 @@
 </script>
 
 <style>
-
-    body, html {
+    body,
+    html {
         margin: 0;
         height: 100%;
     }
-    .CodeMirror.cm-s-base16-dark{
+
+    .CodeMirror.cm-s-base16-dark {
         height: 100vh;
     }
-
-
 </style>
