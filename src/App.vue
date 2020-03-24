@@ -1,28 +1,32 @@
 <template>
-    <section>
-        <codemirror
-                class="editor"
-                ref="myCm"
-                :value="code"
-                :options="cmOptions"
-                @ready="onCmReady"
-                @focus="onCmFocus"
-                @input="onCmCodeChange"
-        >
-        </codemirror>
-    </section>
+  <section>
+    <codemirror
+      class="editor"
+      ref="myCm"
+      :value="code"
+      :options="cmOptions"
+      @ready="onCmReady"
+      @focus="onCmFocus"
+      @input="onCmCodeChange"
+    >
+    </codemirror>
+  </section>
 </template>
 
 <script>
-    import "codemirror/mode/yaml/yaml.js"
-    // theme css
-    import "codemirror/theme/base16-dark.css";
-    // more codemirror resources
-    // import 'codemirror/some-resource...'
-    export default {
-        data() {
-            return {
-                code: `
+import "codemirror/mode/yaml/yaml.js";
+import "codemirror/theme/base16-dark.css";
+import "codemirror/addon/hint/show-hint.css";
+import "codemirror/lib/codemirror";
+import "codemirror/addon/hint/show-hint";
+import "codemirror/addon/search/searchcursor";
+import "codemirror/addon/search/search";
+import "codemirror/addon/display/placeholder";
+import "codemirror/addon/hint/anyword-hint";
+export default {
+  data() {
+    return {
+      code: `
 - hosts: webservers
 
   vars:
@@ -54,49 +58,57 @@
       service:
         name: httpd
         state: restarted `,
-                cmOptions: {
-                    // codemirror options
-                    tabSize: 4,
-                    mode: "yaml",
-                    theme: "base16-dark",
-                    lineNumbers: true,
-                    line: true,
-                    // more codemirror options, 更多 codemirror 的高级配置...
-                }
-            };
+      cmOptions: {
+        lineNumbers: true,
+        indentUnit: 4,
+        autofocus: true,
+        styleActiveLine: true,
+        matchBrackets: true,
+        mode: 'yaml',
+        lineWrapping: true,
+        theme: 'base16-dark',
+        extraKeys: {
+          Ctrl: 'autocomplete',
         },
-        methods: {
-            onCmReady(cm) {
-                console.log("the editor is readied!", cm);
-            },
-            onCmFocus(cm) {
-                console.log("the editor is focus!", cm);
-            },
-            onCmCodeChange(newCode) {
-                console.log("this is new code", newCode);
-                this.code = newCode;
-            }
-        },
-        computed: {
-            codemirror() {
-                return this.$refs.myCm.codemirror;
-            }
-        },
-        mounted() {
-            console.log("this is current codemirror object", this.codemirror);
-            // you can use this.codemirror to do something...
-        }
+        foldGutter: true
+      }
     };
+  },
+  methods: {
+    onCmReady(cm) {
+      cm.on("keypress", () => {
+        cm.showHint();
+      });
+      console.log("the editor is readied!", cm);
+    },
+    onCmFocus(cm) {
+      console.log("the editor is focus!", cm);
+    },
+    onCmCodeChange(newCode) {
+      console.log("this is new code", newCode);
+      this.code = newCode;
+    }
+  },
+  computed: {
+    codemirror() {
+      return this.$refs.myCm.codemirror;
+    }
+  },
+  mounted() {
+    console.log("this is current codemirror object", this.codemirror);
+    // you can use this.codemirror to do something...
+  }
+};
 </script>
 
 <style>
-    body,
-    html {
-        margin: 0;
-        height: 100%;
-    }
+body,
+html {
+  margin: 0;
+  height: 100%;
+}
 
-    .CodeMirror.cm-s-base16-dark {
-        height: 100vh;
-    }
+.CodeMirror.cm-s-base16-dark {
+  height: 100vh;
+}
 </style>
